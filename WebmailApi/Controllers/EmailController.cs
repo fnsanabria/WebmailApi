@@ -1,94 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebmailApi.Data;
-using Webmail.Core.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Text.Json;
-using System.Collections.Generic;
+using Webmail.Core.Entities;
+using WebmailApi.Data;
 
 namespace WebmailApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class EmailController : ControllerBase
     {
-       
-        [HttpGet("login/{user}/{pass}")]
-        public ActionResult Login(string user, string pass)
+
+        [HttpGet("bandejaEntrada/{id}")]
+        public  ActionResult BandajaEntrada(int id)
         {
-             using (var DBcontext = new EmailDBContext())
-            {
-               
-
-                try
-                {
-                  
-
-                    var result =   DBcontext.Usuarios.SingleOrDefault(x => x.CorreoElectronico == user && x.Pass==pass);
-
-                    if (result != null)
-                    {
-                        var respuesta = new
-                        {
-                            code = 200,
-                            message ="login exitoso !!!",
-                            data = result
-                        };
-                        string docs= JsonSerializer.Serialize(respuesta);
-                        return Ok(docs);
-                    }
-                    else { 
-                   
-                        var respuesta = new
-                        {
-                            code = 400,
-                            message = "crendeciales incorrectas !!!",
-                          
-                        };
-
-                        string docs = JsonSerializer.Serialize(respuesta);
-                        return Ok(docs);
-                    }
-                   
-
-                }
-                catch (Exception ex)
-                {
-                    var respuesta = new
-                    {
-                        code = 500,
-                        message = ex.Message,
-                       
-                    };
-
-                    string docs = JsonSerializer.Serialize(respuesta);
-                    return Ok(docs);
-                }
-
-
-
-               
-            }
-        }
-        
-       [HttpGet("buscarCorreo/{email}")]
-       public ActionResult BuscarCorreo(string email)
-        {
+            /*bandeja entrada remitente banadejaEntrada false y [DestinatarioId] mi id*/
             using (var DBcontext = new EmailDBContext())
             {
                 try
                 {
-                    var result = (from datos in DBcontext.Usuarios
-                                   where datos.CorreoElectronico == email
-                                   select datos).First();
-
-
-                    //var result = DBcontext.Usuarios.SingleOrDefault(u => u.CorreoElectronico.Contains(email));
+                  
+                    var result = (from datos in DBcontext.Emails
+                                   .Include(e => e.Remitente)
+                                   .Include(e=> e.Destinatario)// Carga anticipada de la tabla relacionada "Usuario"
+                                  where datos.DestinatarioId == id
+                                  where datos.BandejaEntrada == false
+                                  select datos).ToList();
+                   
                     if (result != null)
                     {
                         var respuesta = new
                         {
                             code = 200,
-                            message = "usuario existe !!!",
-                            data = result
+                            message = "se recupero bandeja de salida con exito",
+                            docs = result
                         };
                         string docs = JsonSerializer.Serialize(respuesta);
                         return Ok(docs);
@@ -98,18 +44,18 @@ namespace WebmailApi.Controllers
 
                         var respuesta = new
                         {
-                            code = 400,
-                            message = "usuario no existe !!!",
+                            code = 300,
+                            message = "sin datos",
 
                         };
 
                         string docs = JsonSerializer.Serialize(respuesta);
                         return Ok(docs);
+
                     }
                 }
                 catch (Exception ex)
                 {
-
                     var respuesta = new
                     {
                         code = 500,
@@ -120,33 +66,75 @@ namespace WebmailApi.Controllers
                     string docs = JsonSerializer.Serialize(respuesta);
                     return Ok(docs);
                 }
-               
+
+
+
+              
             }
-
         }
-        
 
 
-        [HttpGet()]
-        public async Task<ActionResult<int>> GetListUsuario()
+        [HttpGet("bandejaSalida/{id}")]
+        public ActionResult BandajaSalida(int id)
         {
-            var cantidad=0;
+            /*bandejasalida si es true es porque recibio envio email y remitente es mi id*/
             using (var DBcontext = new EmailDBContext())
             {
                 try
                 {
-                    cantidad = DBcontext.Usuarios.Count();
-                   
+                    var result = (from datos in DBcontext.Emails
+                                   .Include(e => e.Remitente)
+                                   .Include(e => e.Destinatario)// Carga anticipada de la tabla relacionada "Usuario"
+                                  where datos.RemitenteId == id
+                                  where datos.BandejaSalida == true
+                                  select datos).ToList();
+
+                    if (result != null)
+                    {
+                        var respuesta = new
+                        {
+                            code = 200,
+                            message = "se recupero bandeja de salida con exito",
+                            docs = result
+                        };
+                        string docs = JsonSerializer.Serialize(respuesta);
+                        return Ok(docs);
+                    }
+                    else
+                    {
+
+                        var respuesta = new
+                        {
+                            code = 300,
+                            message = "sin datos",
+
+                        };
+
+                        string docs = JsonSerializer.Serialize(respuesta);
+                        return Ok(docs);
+
+                    }
                 }
                 catch (Exception ex)
                 {
-                  
+                    var respuesta = new
+                    {
+                        code = 500,
+                        message = ex.Message,
+
+                    };
+
+                    string docs = JsonSerializer.Serialize(respuesta);
+                    return Ok(docs);
                 }
 
-              
 
-                return cantidad;
+
+
             }
         }
+
+
+
     }
 }

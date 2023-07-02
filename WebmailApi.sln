@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebmailApi", "WebmailApi\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebmailVista", "WebmailVista\WebmailVista.csproj", "{5434D791-2C18-40E8-BFCB-0263B96C013C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webmail.Core.Entities", "Webmail.Core.Entities\Webmail.Core.Entities.csproj", "{5C37A9D0-2304-4FD2-9616-FFBB419D848F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webmail.Core.Entities", "Webmail.Core.Entities\Webmail.Core.Entities.csproj", "{5C37A9D0-2304-4FD2-9616-FFBB419D848F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

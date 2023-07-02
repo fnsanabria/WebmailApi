@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,13 @@ namespace Webmail.Core.Entities
    
         [Table("Usuarios")]
         public class Usuario
-        {
-            public int UsuarioId { get; set; }
+    {
+        [Key]
+        public int UsuarioId { get; set; }
+        public string Nombre { get; set; }
+        public string CorreoElectronico { get; set; }
 
-            public string CorreoElectronico { get; set; }
-
-            public string Pass { get; set; }
+         public string Pass { get; set; }
 
         }
     

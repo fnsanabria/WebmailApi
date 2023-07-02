@@ -1,0 +1,57 @@
+﻿@model List<Webmail.Core.Entities.Email>;
+@{
+}
+<h1 class="text-center"> BANDEJA DE ENTRADA</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Remitente
+            </th>
+            <th>
+                contenido
+            </th>
+            <th>
+                fecha
+            </th>
+            <th >
+                leido
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remitente.CorreoElectronico)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contenido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+               
+                    @if (item.Leido)
+                    {
+                    <td>correo leido</td>
+                    }
+                    else
+                    {
+                    <td>correo no leido</td>
+                    }
+                    
+                
+                <td>
+                    <a asp-action="Edit" class="btn btn-warning">Edit</a>
+                    @*  <a asp-action="Details" class="btn btn-primary" asp-route-id="@item.EmailId">Details</a> |
+                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

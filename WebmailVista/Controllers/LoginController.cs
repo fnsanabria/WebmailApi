@@ -1,31 +1,61 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net.NetworkInformation;
+using System.Text;
 using System.Text.Json;
+using Webmail.Core.Entities;
+using WebmailVista.Models;
+
+
+
 namespace WebmailVista.Controllers
 {
     public class LoginController:Controller
     {
-       
+        string ruta = "http://10.125.30.247:5280/api/Usuario/";
         public IActionResult Index()
         {
             return View();
         }
-        public bool login(string user,string pass)
+        public IActionResult ErrorAcceso()
         {
+            return View();
+        }
+        
+
+        [HttpPost]
+        public async Task<IActionResult>  Login(string email, string password)
+        {
+           Usuario u = new Usuario();
+
            
             using (var httpClient= new HttpClient())
             {
-                var body = new
-                {
-                    user = user,
-                    pass = pass,
-                };
-                string json = JsonSerializer.Serialize(body);   //using Newtonsoft.Json
 
-                StringContent httpContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-                var resul = httpClient.PostAsync("https://10.125.30.247/api/Usuario/login/", httpContent);
+
+               string api= ruta+="login/"+email+"/"+password;
+                
+
+                var data = await httpClient.GetStringAsync(api);
+               Respuesta<Usuario> response =JsonSerializer.Deserialize<Respuesta<Usuario>>(data);
+                if (response.code == 200)
+                {
+                   
+                   
+                  
+
+                    return RedirectToAction("Index", "Mail");
+                }
+                else
+                {
+                    //   ViewData["MENSAJE"] = "No tienes credenciales correctas";
+                    return RedirectToAction("ErrorAcceso", "Login");
+                }
+
             }
+           
             
-            return false;
+
         }
        
     }
