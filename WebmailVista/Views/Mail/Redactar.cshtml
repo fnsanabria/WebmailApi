@@ -1,23 +1,28 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Webmail.Core.Entities.Email;
 @{
 }
 <h1 class="text-center"> REDACTAR COOREO</h1>
+<form method="post" asp-action="CrearMail">
+<div class="mb-3">
+        <div class="form-group">
+            <label asp-for="Destinatario.CorreoElectronico" class="control-label"></label>
+            <input asp-for="Destinatario.CorreoElectronico" class="form-control" />
+           
+        </div>
+</div>
+<div class="mb-3">
+        <div class="form-group">
+            <label asp-for="Asunto" class="control-label"></label>
+            <input asp-for="Asunto" class="form-control" />
 
-<div class="mb-3">
-    <label for="exampleFormControlInput1" class="form-label">Para</label>
-    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+        </div>
 </div>
 <div class="mb-3">
-    <label for="exampleFormControlInput1" class="form-label">Asunto</label>
-    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-</div>
-<div class="mb-3">
-    <label for="exampleFormControlTextarea1" class="form-label">Redactar</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <label asp-for="Contenido" class="control-label"></label>
+        <textarea asp-for="Contenido" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
 </div>
 <div class="d-grid gap-2">
-    <button class="btn btn-primary" type="button">Enviar</button>
+        <button class="btn btn-primary" type="submit">Enviar</button>
    
 </div>
+</form>

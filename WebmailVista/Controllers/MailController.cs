@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using System.Text.Json;
 using Webmail.Core.Entities;
 using WebmailVista.Models;
@@ -14,11 +15,60 @@ namespace WebmailVista.Controllers
         }
         public IActionResult Redactar()
         {
-            /**aca va la logica de traer desde la bd*/
-           
+                      
             return View();
         }
-        public async Task<IActionResult> BandejaEntrada()
+
+        public IActionResult CorreoExitoso()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CrearMail([Bind("Destinatario,Asunto,Contenido")] Email email)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var em =  email;
+
+                
+                string api = "http://10.125.30.247:5280/api/Email";
+                var em2 = new
+                {
+                    emailId = 0,
+                    remitenteId =1,
+                    destinatarioId =2,
+                    asunto = "anda el correo",
+                    contenido = "tratando de insertar contenido",
+                    fecha = "2023-07-02T21:02:37.308Z",
+                    leido = true,
+                    bandejaEntrada = false,
+                    bandejaSalida = true,
+
+                };
+
+                var data = await httpClient.PostAsJsonAsync(api, em2);
+               // Respuesta<Email> response = JsonSerializer.Deserialize<Respuesta<Email>>(data);
+                var res = data.Content.ReadAsStringAsync().Result;
+                Respuesta<Email> response = JsonSerializer.Deserialize<Respuesta<Email>>(res);
+                if (response.code == 200)
+                {
+
+
+
+
+                    return RedirectToAction("CorreoExitoso", "Mail");
+                }
+                else
+                {
+                    //   ViewData["MENSAJE"] = "No tienes credenciales correctas";
+                    return RedirectToAction("ErrorAcceso", "Login");
+                }
+                return RedirectToAction("Index", "Mail");
+            }
+        }
+        
+            public async Task<IActionResult> BandejaEntrada()
         {
             /**aca va la logica de traer desde la bd*/
             List<Email> emails = new List<Email>();

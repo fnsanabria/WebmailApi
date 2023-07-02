@@ -135,6 +135,71 @@ namespace WebmailApi.Controllers
         }
 
 
+        [HttpPost()]
+        public async Task<ActionResult> Insert(Email email)
+        {
+            
+            
+            /*bandeja entrada remitente banadejaEntrada false y [DestinatarioId] mi id*/
+            using (var DBcontext = new EmailDBContext())
+            {
+                try
+                {
+                    var des = (from datos in DBcontext.Usuarios
+                                  where datos.UsuarioId == email.DestinatarioId
+                                  select datos).First();
+                    var rem = (from datos in DBcontext.Usuarios
+                               where datos.UsuarioId == email.RemitenteId
+                               select datos).First();
+                 
+                    email.Destinatario = des;
+                    email.Remitente = rem;
+                    DBcontext.Emails.Add(email);
+                    var result = await  DBcontext.SaveChangesAsync();
 
+                    if (result != null)
+                    {
+                        var respuesta = new
+                        {
+                            code = 200,
+                            message = "se creo con exito",
+                           
+                        };
+                        string docs = JsonSerializer.Serialize(respuesta);
+                        return Ok(docs);
+                    }
+                    else
+                    {
+
+                        var respuesta = new
+                        {
+                            code = 300,
+                            message = "sin datos",
+
+                        };
+
+                        string docs = JsonSerializer.Serialize(respuesta);
+                        return Ok(docs);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var respuesta = new
+                    {
+                        code = 500,
+                        message = ex.Message,
+
+                    };
+
+                    string docs = JsonSerializer.Serialize(respuesta);
+                    return Ok(docs);
+                }
+
+
+
+
+            }
+        }
     }
 }
