@@ -147,15 +147,15 @@ namespace WebmailApi.Controllers
                 {
 
 
-                    var des = (from datos in DBcontext.Usuarios
-                               where datos.UsuarioId == email.DestinatarioId
-                               select datos).First();
+                    //var des = (from datos in DBcontext.Usuarios
+                    //           where datos.UsuarioId == email.DestinatarioId
+                    //           select datos).First();
 
-                    var rem = (from datos in DBcontext.Usuarios
-                               where datos.UsuarioId == email.RemitenteId
-                               select datos).First();
-                    email.Remitente = rem;
-                    email.Destinatario = des;
+                    //var rem = (from datos in DBcontext.Usuarios
+                    //           where datos.UsuarioId == email.RemitenteId
+                    //           select datos).First();
+                    //email.Remitente = rem;
+                    //email.Destinatario = des;
 
                     DBcontext.Emails.Add(email);
                     var result = await  DBcontext.SaveChangesAsync();

@@ -20,6 +20,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @if (UsuarioLogin.Id>0){
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Mail" asp-action="Redactar">Redactar</a>
                         </li>
@@ -29,7 +30,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Mail" asp-action="BandejaSalida">Bandeja de Salida</a>
                         </li>
-
+                        }
 
                     </ul>
                 </div>

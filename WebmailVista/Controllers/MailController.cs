@@ -27,8 +27,13 @@ namespace WebmailVista.Controllers
 
             return View();
         }
-        
-            public IActionResult CorreoError()
+        public IActionResult DestinatarioError()
+        {
+
+            return View();
+        }
+
+        public IActionResult CorreoError()
         {
 
             return View();
@@ -38,74 +43,93 @@ namespace WebmailVista.Controllers
         {
             using (var httpClient = new HttpClient())
             {
+
+                string[] usuarios = email.Destinatario.CorreoElectronico.Split(',');
                
+                bool isError = false;
+              
+                List<Usuario> user = new List<Usuario>();
+
+                foreach (var usuar in usuarios)
+                {
+                    var desti = await httpClient.GetStringAsync("http://10.125.30.247:5280/api/Usuario/buscarCorreo/" + usuar);
+                    Respuesta<Usuario> d = JsonSerializer.Deserialize<Respuesta<Usuario>>(desti);
+                  if(d.code == 200) { 
+                    user.Add(d.data);
+                    }
+                    else
+                    {
+                        return RedirectToAction("DestinatarioError", "Mail");
+                    }
+                }
+
               
                 DateTime dateTime = DateTime.Now;
 
                 string api = "http://10.125.30.247:5280/api/Email";
                
                 var remi = await httpClient.GetStringAsync("http://10.125.30.247:5280/api/Usuario/buscarCorreo/usuario@usuario");
-                var desti = await httpClient.GetStringAsync("http://10.125.30.247:5280/api/Usuario/buscarCorreo/flor@flor");
-
                 Respuesta<Usuario> r = JsonSerializer.Deserialize<Respuesta<Usuario>>(remi);
-                Respuesta<Usuario> d = JsonSerializer.Deserialize<Respuesta<Usuario>>(remi);
 
-                Email e = new Email()
+
+
+              foreach (var usuario in user)
                 {
-                    EmailId = 0,
-                    RemitenteId = r.data.UsuarioId,
-                    DestinatarioId = d.data.UsuarioId,
-                    Asunto = email.Asunto,
-                    Contenido = email.Contenido,
-                    Fecha = dateTime,
-                    Leido = false,
-                    BandejaEntrada = false,
-                    BandejaSalida = true,
-                //    Destinatario=d.data,
-                 //   Remitente = r.data,
-
-            };
-
-
-               
+                    try
+                    {
+                        Email e = new Email()
+                    {
+                        EmailId = 0,
+                        RemitenteId = r.data.UsuarioId,
+                        DestinatarioId = usuario.UsuarioId,
+                        Asunto = email.Asunto,
+                        Contenido = email.Contenido,
+                        Fecha = dateTime,
+                        Leido = false,
+                        BandejaEntrada = false,
+                        BandejaSalida = true,
 
 
+                    };
+
+                                         
+
+                        var json = JsonSerializer.Serialize(e);
+                        var m = new StringContent(json, Encoding.UTF8, "application/json");
+                        var data = await httpClient.PostAsync(api, m);
+
+                        var res = data.Content.ReadAsStringAsync().Result;
+                        Respuesta<Email> response = JsonSerializer.Deserialize<Respuesta<Email>>(res);
+                        if (response.code == 200)
+                        {
 
 
+                           
+                        }
+                        else
+                        {
+                           
+                            isError = true;
+                        }
 
-                try
+                    }
+                    catch (Exception)
+                    {
+
+                        return RedirectToAction("CorreoError", "Mail");
+                    }
+
+                }
+                if (!isError)
                 {
-                   
-
-                    var json = JsonSerializer.Serialize(e);
-                    var m = new StringContent(json, Encoding.UTF8, "application/json");
-                    var data = await httpClient.PostAsync(api, m);
-             
-                var res = data.Content.ReadAsStringAsync().Result;
-                Respuesta<Email> response = JsonSerializer.Deserialize<Respuesta<Email>>(res);
-               
-
-                
-                
-                if (response.code == 200)
-                {
-
-
-
-
                     return RedirectToAction("CorreoExitoso", "Mail");
                 }
                 else
                 {
-                        return RedirectToAction("CorreoError", "Mail");
-
-                    }
-                }
-                catch (Exception)
-                {
-
                     return RedirectToAction("CorreoError", "Mail");
                 }
+                
+                
             }
         }
         

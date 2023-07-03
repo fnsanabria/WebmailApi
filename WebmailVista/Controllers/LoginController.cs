@@ -40,9 +40,8 @@ namespace WebmailVista.Controllers
                Respuesta<Usuario> response =JsonSerializer.Deserialize<Respuesta<Usuario>>(data);
                 if (response.code == 200)
                 {
-                   
-                   
-                  
+
+                    UsuarioLogin.Id = response.data.UsuarioId;
 
                     return RedirectToAction("Index", "Mail");
                 }
