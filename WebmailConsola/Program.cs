@@ -30,8 +30,13 @@ else
 {
 
     Console.WriteLine("Menu");
+    Console.WriteLine("1- Bandeja de entrada");
+    Console.WriteLine("2- Bandeja de salida");
+    Console.WriteLine("3- Salir");
+    Console.WriteLine("Menu");
     Console.WriteLine("Seleccione una opcion");
     int op = int.Parse(Console.ReadLine());
+
     List<Email> emails = new List<Email>();
     switch (op)
     {
@@ -59,9 +64,13 @@ else
                     Console.WriteLine($"Destinario = {item.Destinatario.CorreoElectronico}" +
                         $" contenido = {item.Contenido} ");
                 }
-                ; break;
+                 break;
             }
+        case 3: { Console.WriteLine("salida del sistema");break; }
         default:
+            {
+                Console.WriteLine("opcion no valida fin sistema consola");
+            }
             break;
     }
 }

@@ -32,5 +32,8 @@ namespace Webmail.Core.Entities
 
         [ForeignKey("DestinatarioId")]
         public virtual Usuario? Destinatario { get; set; }
+
+
+       
     }
 }

@@ -10,13 +10,14 @@ namespace WebmailApi.Data
         public DbSet<Email> Emails { get; set; }
 
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        //convencion para que los datos datetime sean todos de tipo date
+        //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         //{
-        //    modelBuilder.Entity<Email>()
-        //   .HasOne(e => e.usuario)
-        //  ;
+        //    configurationBuilder.Properties<DateTime>().HaveColumnType("date");
         //}
-    
+
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

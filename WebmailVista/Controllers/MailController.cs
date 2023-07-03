@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Webmail.Core.Entities;
 using WebmailVista.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebmailVista.Controllers
 {
@@ -19,7 +21,14 @@ namespace WebmailVista.Controllers
             return View();
         }
 
+     
         public IActionResult CorreoExitoso()
+        {
+
+            return View();
+        }
+        
+            public IActionResult CorreoError()
         {
 
             return View();
@@ -29,28 +38,55 @@ namespace WebmailVista.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                var em =  email;
+               
+              
+                DateTime dateTime = DateTime.Now;
 
-                
                 string api = "http://10.125.30.247:5280/api/Email";
-                var em2 = new
+               
+                var remi = await httpClient.GetStringAsync("http://10.125.30.247:5280/api/Usuario/buscarCorreo/usuario@usuario");
+                var desti = await httpClient.GetStringAsync("http://10.125.30.247:5280/api/Usuario/buscarCorreo/flor@flor");
+
+                Respuesta<Usuario> r = JsonSerializer.Deserialize<Respuesta<Usuario>>(remi);
+                Respuesta<Usuario> d = JsonSerializer.Deserialize<Respuesta<Usuario>>(remi);
+
+                Email e = new Email()
                 {
-                    emailId = 0,
-                    remitenteId =1,
-                    destinatarioId =2,
-                    asunto = "anda el correo",
-                    contenido = "tratando de insertar contenido",
-                    fecha = "2023-07-02T21:02:37.308Z",
-                    leido = true,
-                    bandejaEntrada = false,
-                    bandejaSalida = true,
+                    EmailId = 0,
+                    RemitenteId = r.data.UsuarioId,
+                    DestinatarioId = d.data.UsuarioId,
+                    Asunto = email.Asunto,
+                    Contenido = email.Contenido,
+                    Fecha = dateTime,
+                    Leido = false,
+                    BandejaEntrada = false,
+                    BandejaSalida = true,
+                //    Destinatario=d.data,
+                 //   Remitente = r.data,
 
-                };
+            };
 
-                var data = await httpClient.PostAsJsonAsync(api, em2);
-               // Respuesta<Email> response = JsonSerializer.Deserialize<Respuesta<Email>>(data);
+
+               
+
+
+
+
+
+                try
+                {
+                   
+
+                    var json = JsonSerializer.Serialize(e);
+                    var m = new StringContent(json, Encoding.UTF8, "application/json");
+                    var data = await httpClient.PostAsync(api, m);
+             
                 var res = data.Content.ReadAsStringAsync().Result;
                 Respuesta<Email> response = JsonSerializer.Deserialize<Respuesta<Email>>(res);
+               
+
+                
+                
                 if (response.code == 200)
                 {
 
@@ -61,10 +97,15 @@ namespace WebmailVista.Controllers
                 }
                 else
                 {
-                    //   ViewData["MENSAJE"] = "No tienes credenciales correctas";
-                    return RedirectToAction("ErrorAcceso", "Login");
+                        return RedirectToAction("CorreoError", "Mail");
+
+                    }
                 }
-                return RedirectToAction("Index", "Mail");
+                catch (Exception)
+                {
+
+                    return RedirectToAction("CorreoError", "Mail");
+                }
             }
         }
         
