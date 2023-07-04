@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Webmail.Core.Entities;
 using WebmailVista.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace WebmailVista.Controllers
 {
@@ -23,7 +23,11 @@ namespace WebmailVista.Controllers
             return RedirectToAction("ErrorAcceso", "Login");
         }
 
-     
+       
+
+      
+
+
         public IActionResult CorreoExitoso()
         {
 

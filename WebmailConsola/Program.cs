@@ -28,51 +28,82 @@ if (intentos == 2)
 }
 else
 {
-
-    Console.WriteLine("Menu");
-    Console.WriteLine("1- Bandeja de entrada");
-    Console.WriteLine("2- Bandeja de salida");
-    Console.WriteLine("3- Salir");
-    Console.WriteLine("--------------------------");
-    Console.WriteLine("Seleccione una opcion");
-    int op = int.Parse(Console.ReadLine());
-
-    List<Email> emails = new List<Email>();
-    switch (op)
+    int menu = 0;
+    do
     {
-        
-        case 1: 
-            {
-                Console.WriteLine("Bandeja de entrada"); 
-             emails= await EmailService.BandejaEntrada();
 
-                foreach (var item in emails)
-                {
 
-                    Console.WriteLine($"Remitente = {item.Remitente.CorreoElectronico}" +
-                        $" contenido = {item.Contenido} ");
-                }
-                break; 
-            }
-        case 2: {
-                Console.WriteLine("Bandeja de salida");
-             emails = await EmailService.BandejaSalida();
-                
-                foreach (var item in emails)
+        Console.WriteLine("Menu");
+        Console.WriteLine("1- Bandeja de entrada");
+        Console.WriteLine("2- Bandeja de salida");
+        Console.WriteLine("3- Filtro Bandeja de salida");
+        Console.WriteLine("4- Salir");
+        Console.WriteLine("--------------------------");
+        Console.WriteLine("Seleccione una opcion");
+        int op = int.Parse(Console.ReadLine());
+
+        List<Email> emails = new List<Email>();
+        switch (op)
+        {
+
+            case 1:
                 {
-                    
-                    Console.WriteLine($"Destinario = {item.Destinatario.CorreoElectronico}" +
-                        $" contenido = {item.Contenido} ");
+                    Console.WriteLine("Bandeja de entrada");
+                    emails = await EmailService.BandejaEntrada();
+
+                    foreach (var item in emails)
+                    {
+
+                        Console.WriteLine($"Remitente = {item.Remitente.CorreoElectronico}" +
+                            $" contenido = {item.Contenido} ");
+                    }
+                    break;
                 }
-                 break;
-            }
-        case 3: { Console.WriteLine("salida del sistema");break; }
-        default:
-            {
-                Console.WriteLine("opcion no valida fin sistema consola");
-            }
-            break;
-    }
+            case 2:
+                {
+                    Console.WriteLine(" filtro Bandeja de salida");
+                    emails = await EmailService.BandejaSalida();
+
+                    foreach (var item in emails)
+                    {
+
+                        Console.WriteLine($"Destinario = {item.Destinatario.CorreoElectronico}" +
+                            $" contenido = {item.Contenido} ");
+                    };
+                    break;
+                }
+
+            case 3:
+                {
+                    Console.WriteLine("Ingrese texto a buscar");
+                    string criterio = Console.ReadLine();
+                    Console.WriteLine($"se aplico el filtro con la palabra  {criterio}");
+                    emails = await EmailService.FiltroEmail(criterio);
+
+                    foreach (var item in emails)
+                    {
+
+                        Console.WriteLine($"Destinario = {item.Destinatario.CorreoElectronico}" +
+                            $" contenido = {item.Contenido} ");
+                    }
+                    break;
+
+
+
+                }
+            case 4: { Console.WriteLine("salida del sistema"); break; }
+            default:
+                {
+                    Console.WriteLine("opcion no valida fin sistema consola");
+                };
+                break;
+        }
+
+        menu++;
+
+    } while (menu < 2);
+
+   
 }
 
 Console.ReadKey();

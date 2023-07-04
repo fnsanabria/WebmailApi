@@ -82,5 +82,47 @@ namespace WebmailConsola.Servicios
         }
 
 
+
+
+
+  
+
+
+        public static async Task<List<Email>> FiltroEmail(string criterio)
+        {
+            /**aca va la logica de traer desde la bd*/
+            List<Email> emails = new List<Email>();
+            using (var httpClient = new HttpClient())
+            {
+
+
+                string api = "";
+               
+                    api += "http://10.125.30.247:5280/api/Email/emailFil/" + UsuarioLogin.UsuarioLogin.Id+"/"+criterio;
+
+                var data = await httpClient.GetStringAsync(api);
+                Respuesta<Email> response = JsonSerializer.Deserialize<Respuesta<Email>>(data);
+                if (response.code == 200)
+                {
+
+                    emails = response.docs;
+
+
+
+
+                    return emails;
+                }
+                else
+                {
+
+                    return new List<Email>();
+                }
+
+
+                return new List<Email>();
+            }
+
+        }
+
     }
 }
