@@ -20,7 +20,7 @@ namespace WebmailConsola.Servicios
             {
 
                 string api = "";
-                api += "http://10.125.30.247:5280/api/Email/bandejaEntrada/" + 1;
+                api += "http://10.125.30.247:5280/api/Email/bandejaEntrada/" + UsuarioLogin.UsuarioLogin.Id;
 
 
                 var data = await httpClient.GetStringAsync(api);
@@ -54,7 +54,7 @@ namespace WebmailConsola.Servicios
 
 
                 string api = "";
-                api += "http://10.125.30.247:5280/api/Email/bandejaSalida/" + 1;
+                api += "http://10.125.30.247:5280/api/Email/bandejaSalida/" + UsuarioLogin.UsuarioLogin.Id;
 
 
                 var data = await httpClient.GetStringAsync(api);

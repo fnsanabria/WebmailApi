@@ -33,7 +33,7 @@ else
     Console.WriteLine("1- Bandeja de entrada");
     Console.WriteLine("2- Bandeja de salida");
     Console.WriteLine("3- Salir");
-    Console.WriteLine("Menu");
+    Console.WriteLine("--------------------------");
     Console.WriteLine("Seleccione una opcion");
     int op = int.Parse(Console.ReadLine());
 

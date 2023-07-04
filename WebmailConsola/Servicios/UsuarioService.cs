@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Webmail.Core.Entities;
 using WebmailConsola.Respuesta;
 
 namespace WebmailConsola.Servicios
@@ -26,13 +27,12 @@ namespace WebmailConsola.Servicios
 
 
                 var data = await httpClient.GetStringAsync(api);
-                Respuesta<UsuarioService> response = JsonSerializer.Deserialize<Respuesta<UsuarioService>>(data);
+                Respuesta<Usuario> response = JsonSerializer.Deserialize<Respuesta<Usuario>>(data);
                 if (response.code == 200)
                 {
 
 
-
-
+                    UsuarioLogin.UsuarioLogin.Id = response.data.UsuarioId;
                     return true;
                 }
                 else

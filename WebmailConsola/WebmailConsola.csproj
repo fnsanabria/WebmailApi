@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cifrado\Cifrado.csproj" />
     <ProjectReference Include="..\Webmail.Core.Entities\Webmail.Core.Entities.csproj" />
   </ItemGroup>
 

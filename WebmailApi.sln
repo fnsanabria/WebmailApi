@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebmailVista", "WebmailVist
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webmail.Core.Entities", "Webmail.Core.Entities\Webmail.Core.Entities.csproj", "{5C37A9D0-2304-4FD2-9616-FFBB419D848F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebmailConsola", "WebmailConsola\WebmailConsola.csproj", "{6E786126-C48D-4E5F-B2F4-E9E71517DAFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebmailConsola", "WebmailConsola\WebmailConsola.csproj", "{6E786126-C48D-4E5F-B2F4-E9E71517DAFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cifrado", "Cifrado\Cifrado.csproj", "{A90BB127-4948-49AA-82D8-A70438C73B78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6E786126-C48D-4E5F-B2F4-E9E71517DAFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E786126-C48D-4E5F-B2F4-E9E71517DAFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E786126-C48D-4E5F-B2F4-E9E71517DAFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A90BB127-4948-49AA-82D8-A70438C73B78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A90BB127-4948-49AA-82D8-A70438C73B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A90BB127-4948-49AA-82D8-A70438C73B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A90BB127-4948-49AA-82D8-A70438C73B78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

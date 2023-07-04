@@ -20,9 +20,9 @@ namespace WebmailApi.Controllers
 
                 try
                 {
-                  
+                    string passCifrado = Cifrado.Cifrado.cifrar(pass, 17);
 
-                    var result =   DBcontext.Usuarios.SingleOrDefault(x => x.CorreoElectronico == user && x.Pass==pass);
+                    var result =   DBcontext.Usuarios.SingleOrDefault(x => x.CorreoElectronico == user && x.Pass== passCifrado);
 
                     if (result != null)
                     {
